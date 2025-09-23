@@ -37,7 +37,7 @@ def motor_start_curve(I_f, I_lr, t_acc, V_pct=100):
 # ──────────────────────────────
 # Streamlit UI
 # ──────────────────────────────
-st.title("Indcution Motor Protection Curves")
+st.title("Induction Motor Protection Curves")
 
 st.sidebar.header("Motor Parameters")
 kw = st.sidebar.number_input("Motor rating (kW)", 1, 5000, 500)
