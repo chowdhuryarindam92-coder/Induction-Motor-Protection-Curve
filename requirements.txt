@@ -1,4 +1,3 @@
-streamlit
-numpy
-pyplot
-
+streamlit==1.38.0
+numpy==1.26.4
+plotly==5.22.0
