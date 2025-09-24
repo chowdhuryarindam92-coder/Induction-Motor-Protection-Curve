@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
 import streamlit as st
 import plotly.graph_objects as go
 
@@ -7,7 +6,7 @@ import plotly.graph_objects as go
 # Protection functions
 # ──────────────────────────────
 def thermal_trip_time(I, I_th, tau, A2=0, K=1.0, I2=0):
-    I_eq = np.sqrt(I**2 + K * I2**2)
+    I_eq = np.sqrt(I*2 + K * I2*2)
     if I_eq <= I_th:
         return np.inf
     try:
