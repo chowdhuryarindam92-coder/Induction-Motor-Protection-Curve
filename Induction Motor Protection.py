@@ -143,6 +143,65 @@ with colB:
     sel_none = st.checkbox("Select none", value=False)
     if sel_none:
         selected = []
+# --- Formulas & Explanation (collapsible) ---
+with st.expander("Formulas & Explanation", expanded=False):
+    c1, c2 = st.columns([1, 2])
+
+    with c1:
+        st.markdown("#### Protection Function")
+        st.markdown("- **Thermal Trip**")
+        st.markdown("- **IDMT Overcurrent**")
+        st.markdown("- **Motor Start Decay**")
+        st.markdown("- **Locked Rotor**")
+        st.markdown("- **NPS Protection**")
+
+    with c2:
+        st.markdown("#### Formula(s) & Notes")
+
+        # Thermal Trip
+        st.markdown("**Thermal Trip**")
+        st.latex(r"""
+        t \;=\; -\,\tau \cdot \ln\!\left( 1 - \left(\frac{I_{th}}{I_{eq}}\right)^{2} \cdot (1 - A_{2}) \right)
+        """)
+        st.latex(r"""
+        I_{eq} \;=\; \sqrt{I^{2} + K \cdot I_{2}^{2}}
+        """)
+        st.caption("Valid when \(I_{eq} > I_{th}\). \(A_2\) is hot/cold condition; \(I_2\) is negative-sequence current, \(K\) its weighting.")
+
+        st.markdown("---")
+
+        # IDMT Overcurrent
+        st.markdown("**IDMT Overcurrent (IEC 60255-151)**")
+        st.latex(r"M = \frac{I}{I_{pickup}}")
+        st.latex(r"t = TMS \cdot \frac{0.14}{M^{0.02}-1} \quad \text{(Normal Inverse, NI)}")
+        st.latex(r"t = TMS \cdot \frac{13.5}{M-1} \quad \text{(Very Inverse, VI)}")
+        st.latex(r"t = TMS \cdot \frac{80}{M^{2}-1} \quad \text{(Extremely Inverse, EI)}")
+        st.caption("Valid when \(M = I/I_{pickup} > 1\).")
+
+        st.markdown("---")
+
+        # Motor Start Decay
+        st.markdown("**Motor Start Decay**")
+        st.latex(r"I_{lr,adj} = I_{lr} \cdot \frac{V_{start}}{100}")
+        st.latex(r"slip = \max(0.01, 1 - t/t_{acc})")
+        st.latex(r"I_{start}(t) = I_{f} + (I_{lr,adj} - I_{f}) \cdot slip")
+        st.caption("Models decaying current during acceleration, limited by slip and start voltage.")
+
+        st.markdown("---")
+
+        # Locked Rotor
+        st.markdown("**Locked Rotor**")
+        st.latex(r"I_{LR,prot} = LR_{prot\_mult} \times I_{f}")
+        st.latex(r"LR_{time} = \text{user input}")
+        st.caption("Protection applies fixed pickup multiple with user-defined time setting.")
+
+        st.markdown("---")
+
+        # NPS Protection
+        st.markdown("**NPS Protection**")
+        st.latex(r"I_{2,pickup} = \text{NPS pickup (\% of FLC)} \times \frac{I_f}{100}")
+        st.latex(r"t_{NPS} = \text{user input}")
+        st.caption("Protects against negative-phase sequence currents; pickup and delay are user inputs.")
 
 # ──────────────────────────────
 # Plotting (Plotly)
@@ -286,7 +345,7 @@ st.markdown(
 )
 st.markdown(
     "<div style='text-align:center; color:gray; font-size:14px;'>"
-    "Developed by <b>Arindam Chowdhury</b>"
+    "Developed by <b>Arindam Chowdhury</b>, Electrical Engineer"
     "</div>",
     unsafe_allow_html=True
 )
