@@ -110,15 +110,15 @@ ALL_SERIES = [
     "Thermal limit (Hot)",
     "Motor start",
     f"IDMT ({curve_type})",
-    "Instantaneous OC (vertical)",
-    "Definite-time OC (vertical)",
-    "Definite-time OC (horizontal)",
-    "Earth Fault (vertical)",
-    "Earth Fault (horizontal)",
-    "NPS (vertical)",
-    "NPS (horizontal)",
-    "Locked Rotor Pickup (vertical)",
-    "Locked Rotor Max Time (horizontal)",
+    "Instantaneous OC (Pick-up)",
+    "Definite-time OC (Pick-up)",
+    "Definite-time OC (Time)",
+    "Earth Fault (Pick-up)",
+    "Earth Fault (Time)",
+    "NPS (Pick-up)",
+    "NPS (Time)",
+    "Locked Rotor Pickup (Pick-up)",
+    "Locked Rotor Max Time (Time)",
 ]
 
 st.subheader("Display options")
@@ -132,8 +132,8 @@ with colA:
             "Thermal limit (Hot)",
             "Motor start",
             f"IDMT ({curve_type})",
-            "Instantaneous OC (vertical)",
-            "Definite-time OC (horizontal)",
+            "Instantaneous OC (Pick-up)",
+            "Definite-time OC (Time)",
         ],
     )
 with colB:
@@ -198,15 +198,15 @@ def _hline(y, color):
     fig.add_shape(type="line", x0=0, x1=1, xref="paper", y0=y, y1=y, yref="y",
                   line=dict(color=color, width=3, dash="dash"))
 
-if "Instantaneous OC (vertical)" in selected:        _vline(I_inst_mult * I_f, "darkred")
-if "Definite-time OC (vertical)" in selected:        _vline(I_dt_mult * I_f, "darkgreen")
-if "Definite-time OC (horizontal)" in selected:      _hline(t_dt, "darkgreen")
-if "Earth Fault (vertical)" in selected:             _vline(I_ef, "darkmagenta")
-if "Earth Fault (horizontal)" in selected:           _hline(t_ef, "darkmagenta")
-if "NPS (vertical)" in selected:                     _vline(I2_pickup, "darkcyan")
-if "NPS (horizontal)" in selected:                   _hline(t_nps, "darkcyan")
-if "Locked Rotor Pickup (vertical)" in selected:     _vline(I_LR_prot, "saddlebrown")
-if "Locked Rotor Max Time (horizontal)" in selected: _hline(LR_time, "saddlebrown")
+if "Instantaneous OC (Pick-up)" in selected:        _vline(I_inst_mult * I_f, "darkred")
+if "Definite-time OC (Pick-up)" in selected:        _vline(I_dt_mult * I_f, "darkgreen")
+if "Definite-time OC (Time)" in selected:      _hline(t_dt, "darkgreen")
+if "Earth Fault (Pick-up)" in selected:             _vline(I_ef, "darkmagenta")
+if "Earth Fault (Time)" in selected:           _hline(t_ef, "darkmagenta")
+if "NPS (Pick-up)" in selected:                     _vline(I2_pickup, "darkcyan")
+if "NPS (Time)" in selected:                   _hline(t_nps, "darkcyan")
+if "Locked Rotor Pickup (Pick-up)" in selected:     _vline(I_LR_prot, "saddlebrown")
+if "Locked Rotor Max Time (Time)" in selected: _hline(LR_time, "saddlebrown")
 
 # Title includes equipment
 title_main = f"{equipment_name} — Protection Curves"
@@ -261,15 +261,15 @@ if "Thermal limit (Cold)" in selected: legend_items.append(swatch("darkblue")   
 if "Thermal limit (Hot)"  in selected: legend_items.append(swatch("darkorange") + f"Thermal limit (Hot) — {equipment_name}")
 if "Motor start"          in selected: legend_items.append(swatch("black")      + f"Motor start ({V_start}%) — {equipment_name}")
 if f"IDMT ({curve_type})" in selected: legend_items.append(swatch("purple")     + f"IDMT ({curve_type}) — {equipment_name}")
-if "Instantaneous OC (vertical)" in selected: legend_items.append(swatch("darkred")      + "Inst. OC (vertical)")
-if "Definite-time OC (vertical)" in selected:   legend_items.append(swatch("darkgreen")  + "Definite-time OC (vertical)")
-if "Definite-time OC (horizontal)" in selected: legend_items.append(swatch("darkgreen")  + "Definite-time OC (horizontal)")
-if "Earth Fault (vertical)" in selected:        legend_items.append(swatch("darkmagenta")+ "Earth Fault (vertical)")
-if "Earth Fault (horizontal)" in selected:      legend_items.append(swatch("darkmagenta")+ "Earth Fault (horizontal)")
-if "NPS (vertical)" in selected:                legend_items.append(swatch("darkcyan")   + "NPS (vertical)")
-if "NPS (horizontal)" in selected:              legend_items.append(swatch("darkcyan")   + "NPS (horizontal)")
-if "Locked Rotor Pickup (vertical)" in selected:legend_items.append(swatch("saddlebrown")+ "Locked Rotor Pickup (vertical)")
-if "Locked Rotor Max Time (horizontal)" in selected: legend_items.append(swatch("saddlebrown")+ "Locked Rotor Max Time (horizontal)")
+if "Instantaneous OC (Pick-up)" in selected: legend_items.append(swatch("darkred")      + "Inst. OC (Pick-up)")
+if "Definite-time OC (Pick-up)" in selected:   legend_items.append(swatch("darkgreen")  + "Definite-time OC (Pick-up)")
+if "Definite-time OC (Time)" in selected: legend_items.append(swatch("darkgreen")  + "Definite-time OC (Time)")
+if "Earth Fault (Pick-up)" in selected:        legend_items.append(swatch("darkmagenta")+ "Earth Fault (Pick-up)")
+if "Earth Fault (Time)" in selected:      legend_items.append(swatch("darkmagenta")+ "Earth Fault (Time)")
+if "NPS (Pick-up)" in selected:                legend_items.append(swatch("darkcyan")   + "NPS (Pick-up)")
+if "NPS (Time)" in selected:              legend_items.append(swatch("darkcyan")   + "NPS (Time)")
+if "Locked Rotor Pickup (Pick-up)" in selected:legend_items.append(swatch("saddlebrown")+ "Locked Rotor Pickup (Pick-up)")
+if "Locked Rotor Max Time (Time)" in selected: legend_items.append(swatch("saddlebrown")+ "Locked Rotor Max Time (Time)")
 
 st.markdown("### Legend")
 if equipment_name or equipment_tag:
