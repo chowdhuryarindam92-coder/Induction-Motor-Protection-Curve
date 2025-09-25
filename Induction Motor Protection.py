@@ -279,3 +279,14 @@ if legend_items:
     st.markdown("<div style='line-height:1.8'>" + "<br>".join(legend_items) + "</div>", unsafe_allow_html=True)
 else:
     st.info("No variables selected. Use the selector above to add curves/limits to the chart.")
+# Footer
+st.markdown(
+    "<hr style='margin-top:30px;margin-bottom:10px;border:1px solid #ccc'>",
+    unsafe_allow_html=True
+)
+st.markdown(
+    "<div style='text-align:center; color:gray; font-size:14px;'>"
+    "Developed by <b>Arindam Chowdhury</b>"
+    "</div>",
+    unsafe_allow_html=True
+)
