@@ -171,77 +171,89 @@ with colB:
     sel_none = st.checkbox("Select none", value=False)
     if sel_none:
         selected = []
-st.markdown("## Recommended Motor Protection setting")
 
-with st.expander("Recommended Motor Protection setting", expanded=False):
+st.markdown("## Recommended Motor Protection Setting")
+
+with st.expander("Recommended Motor Protection Setting", expanded=False):
     # Compute typical K from current LRC (×FLC)
     _lrc = float(I_lr_mult)  # your slider (×FLC)
     K_typical_val = 175 / (_lrc**2) if _lrc > 0 else None
     K_cons_val    = 230 / (_lrc**2) if _lrc > 0 else None
 
     rows = [
-    ("Motor Parameters", "Motor Power, FLC, Voltage", "As per motor datasheet"),
-    ("Motor Parameters", "Locked Rotor Current (LRC) / Starting Current", "5–7 × FLC"),
+        ("Motor Parameters", "Motor Power, FLC, Voltage", "As per motor datasheet"),
+        ("Motor Parameters", "Locked Rotor Current (LRC) / Starting Current", "5–7 × FLC"),
 
-    ("Thermal Model", "Thermal Pickup (Ith)", "FLC (or 1.05 × FLC for service factor)"),
-    ("Thermal Model", "Heating Time Constant (τ)", "25 minutes (typical)"),
-    ("Thermal Model", "Cooling Time Constant", "75 minutes (typical)"),
-    ("Thermal Model", "A² Factor (Initial Heating State)", "Cold: 0.0, Hot: 0.5"),
-    ("Thermal Model", "Negative Sequence Heating (K Factor)", "Typical: K = 175 / LRC²"),
-    ("Thermal Model", "Negative Sequence Heating (K Factor)", "Conservative: K = 230 / LRC²"),
-    ("Thermal Model", "Negative Sequence Heating (K Factor)", "Typical value is 3"),
+        ("Thermal Model", "Thermal Pickup (Ith)", "FLC (or 1.05 × FLC for service factor)"),
+        ("Thermal Model", "Heating Time Constant (τ)", "25 minutes (typical)"),
+        ("Thermal Model", "Cooling Time Constant", "75 minutes (typical)"),
+        ("Thermal Model", "A² Factor (Initial Heating State)", "Cold: 0.0, Hot: 0.5"),
+        ("Thermal Model", "Negative Sequence Heating (K Factor)", f"Typical: 175 / LRC² → {K_typical_val:.3f}" if K_typical_val else "N/A"),
+        ("Thermal Model", "Negative Sequence Heating (K Factor)", f"Conservative: 230 / LRC² → {K_cons_val:.3f}" if K_cons_val else "N/A"),
+        ("Thermal Model", "Negative Sequence Heating (K Factor)", "Typical value is 3"),
 
-    ("Thermal Overload Protection", "Thermal Damage Multiplier(TDM)", "Range 1 to 15."),
-    ("Thermal Overload Protection", "Thermal Overload Ip (×FLC)", "FLC (or 1.05 × FLC for service factor)"),
-    ("Thermal Overload Protection", "Overload Curve Coordination", "Must lie below motor thermal damage curve"),
+        ("Thermal Overload Protection", "Thermal Damage Multiplier(TDM)", "Range 1 to 15."),
+        ("Thermal Overload Protection", "Thermal Overload Ip (×FLC)", "FLC (or 1.05 × FLC for service factor)"),
+        ("Thermal Overload Protection", "Overload Curve Coordination", "Must lie below motor thermal damage curve"),
 
-    ("IDMT Curve", "IDMT Curve Type", "NI / VI / EI"),
+        ("IDMT Curve", "IDMT Curve Type", "NI / VI / EI"),
 
-    ("Overcurrent Protection", "Instantaneous OC", "10 × FLC or 1.25 × Starting Current"),
-    ("Overcurrent Protection", "Definite-Time OC", "50–100 ms"),
+        ("Overcurrent Protection", "Instantaneous OC", "10 × FLC or 1.25 × Starting Current"),
+        ("Overcurrent Protection", "Definite-Time OC", "50–100 ms"),
 
-    ("Earth Fault Protection", "Pickup (Residual CT)", "0.2 × FLC"),
-    ("Earth Fault Protection", "Pickup (CBCT)", "0.1 × FLC"),
-    ("Earth Fault Protection", "Time Delay", "100 ms"),
+        ("Earth Fault Protection", "Pickup (Residual CT)", "0.2 × FLC"),
+        ("Earth Fault Protection", "Pickup (CBCT)", "0.1 × FLC"),
+        ("Earth Fault Protection", "Time Delay", "100 ms"),
 
-    ("Locked Rotor Protection", "Pickup", "> FLC, < Starting Current, Refer OEM datasheet"),
-    ("Locked Rotor Protection", "Time Delay", "> Start time @ 80% voltage, < Cold stall time"),
+        ("Locked Rotor Protection", "Pickup", "> FLC, < Starting Current, Refer OEM datasheet"),
+        ("Locked Rotor Protection", "Time Delay", "> Start time @ 80% voltage, < Cold stall time"),
 
-    ("Stall Protection", "Pickup", "2.5–3 × FLC,  Refer OEM datasheet"),
-    ("Stall Protection", "Time Delay", "Typical value is 3-5S"),
+        ("Stall Protection", "Pickup", "2.5–3 × FLC, Refer OEM datasheet"),
+        ("Stall Protection", "Time Delay", "Typical value is 3-5s"),
 
-    ("Negative Phase Sequence Protection", "Definite Time Element", "30-50% of FLC"),
-    ("Negative Phase Sequence Protection", "Definite Time", "3-5 sec"),
-    ("Negative Phase Sequence Protection", "IDMT Curve Type (Based on IEC standard allowing 1% voltage unbalance leading to ~7% Current)", "10-15% of FLC, TMS: 1"),
-]
+        ("Negative Phase Sequence Protection", "Definite Time Element", "30-50% of FLC"),
+        ("Negative Phase Sequence Protection", "Definite Time", "3-5 sec"),
+        ("Negative Phase Sequence Protection", "IDMT Curve Type (IEC, 1% V unbalance → ~7% I)", "10-15% of FLC, TMS: 1"),
+    ]
 
- df_rec = pd.DataFrame(
-    rows,
-    columns=["Category", "Parameter", "Recommended Setting/Typical Value"]
-)
+    # Add one empty row so last row is visible
+    rows.append(("", "", ""))
 
-# Show table
-st.data_editor(
-    df_rec,
-    use_container_width=True,
-    hide_index=True,   # hides row numbers
-    num_rows="fixed",  # prevents add/remove
-    column_config={
-        "Category": st.column_config.SelectboxColumn("Category", options=df_rec["Category"].unique().tolist(), disabled=True),
-        "Parameter": st.column_config.SelectboxColumn("Parameter", options=df_rec["Parameter"].tolist(), disabled=True),
-        "Recommended Setting/Typical Value": st.column_config.SelectboxColumn("Recommended Setting/Typical Value", options=df_rec["Recommended Setting/Typical Value"].tolist(), disabled=True),
-    },
-    key="recommended_table_view_only"
-)
+    df_rec = pd.DataFrame(
+        rows,
+        columns=["Category", "Parameter", "Recommended Setting/Typical Value"]
+    )
 
-csv_bytes = df_rec.to_csv(index=False).encode("utf-8")
-st.download_button(
-    "Download Recommended Settings (CSV)",
-    csv_bytes,
-    file_name="recommended_motor_protection_settings.csv",
-    mime="text/csv",
-    use_container_width=True,
-)
+    # Show dropdown-look table (read-only)
+    st.data_editor(
+        df_rec,
+        use_container_width=True,
+        hide_index=True,
+        num_rows="fixed",
+        column_config={
+            "Category": st.column_config.SelectboxColumn(
+                "Category", options=df_rec["Category"].unique().tolist(), disabled=True
+            ),
+            "Parameter": st.column_config.SelectboxColumn(
+                "Parameter", options=df_rec["Parameter"].tolist(), disabled=True
+            ),
+            "Recommended Setting/Typical Value": st.column_config.SelectboxColumn(
+                "Recommended Setting/Typical Value", options=df_rec["Recommended Setting/Typical Value"].tolist(), disabled=True
+            ),
+        },
+        key="recommended_table_view_only"
+    )
+
+    # Download button
+    csv_bytes = df_rec.to_csv(index=False).encode("utf-8")
+    st.download_button(
+        "Download Recommended Settings (CSV)",
+        csv_bytes,
+        file_name="recommended_motor_protection_settings.csv",
+        mime="text/csv",
+        use_container_width=True,
+    )
+
 # ──────────────────────────────
 # Plotting (Plotly)
 # ──────────────────────────────
