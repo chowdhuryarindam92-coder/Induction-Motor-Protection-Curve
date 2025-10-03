@@ -236,14 +236,14 @@ st.data_editor(
     key="recommended_table_view_only"
 )
 
-    csv_bytes = df_rec.to_csv(index=False).encode("utf-8")
-    st.download_button(
-        "Download Recommended Settings (CSV)",
-        csv_bytes,
-        file_name="recommended_motor_protection_settings.csv",
-        mime="text/csv",
-        use_container_width=True,
-    )
+csv_bytes = df_rec.to_csv(index=False).encode("utf-8")
+st.download_button(
+    "Download Recommended Settings (CSV)",
+    csv_bytes,
+    file_name="recommended_motor_protection_settings.csv",
+    mime="text/csv",
+    use_container_width=True,
+)
 # ──────────────────────────────
 # Plotting (Plotly)
 # ──────────────────────────────
