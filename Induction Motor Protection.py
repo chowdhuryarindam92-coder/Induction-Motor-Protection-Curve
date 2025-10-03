@@ -215,7 +215,10 @@ with st.expander("Recommended Motor Protection setting", expanded=False):
     ("Negative Phase Sequence Protection", "IDMT Curve Type (Based on IEC standard allowing 1% voltage unbalance leading to ~7% Current)", "10-15% of FLC, TMS: 1"),
 ]
 
-    df_rec = pd.DataFrame(rows)
+    df_rec = pd.DataFrame(
+    rows,
+    columns=["Category", "Parameter", "Recommended Setting/Typical Value"]
+)
 
     st.dataframe(df_rec, use_container_width=True, hide_index=True)
 
