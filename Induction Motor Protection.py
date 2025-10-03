@@ -180,38 +180,40 @@ with st.expander("Recommended Motor Protection setting", expanded=False):
     K_cons_val    = 230 / (_lrc**2) if _lrc > 0 else None
 
     rows = [
-        {"Category":"Motor Parameters", "Parameter":"Motor Power, FLC, Voltage", "Recommended Setting/Typical Value":"As per motor datasheet"},
-        {"Category":"Motor Parameters", "Parameter":"Locked Rotor Current (LRC) / Starting Current", "Recommended Setting/Typical Value":"5–7 × FLC"},
+    ("Motor Parameters", "Motor Power, FLC, Voltage", "As per motor datasheet"),
+    ("Motor Parameters", "Locked Rotor Current (LRC) / Starting Current", "5–7 × FLC"),
 
-        {"Category":"Thermal Overload Protection", "Parameter":"Thermal Pickup (Ith)", "Recommended Setting/Typical Value":"FLC (or 1.05 × FLC for service factor)"},
-        {"Category":"Thermal Overload Protection", "Parameter":"Heating Time Constant (τ)", "Recommended Setting/Typical Value":"25 minutes (typical)"},
-        {"Category":"Thermal Overload Protection", "Parameter":"Cooling Time Constant", "Recommended Setting/Typical Value":"75 minutes (typical)"},
-        {"Category":"Thermal Overload Protection", "Parameter":"A² Factor (Initial Heating State)", "Recommended Setting/Typical Value":"Cold: 0.0; Hot: 0.5"},
-        {"Category":"Thermal Overload Protection", "Parameter":"Negative Sequence Heating (K Factor)",
-         "Recommended Setting/Typical Value": (
-             f"Typical: K = 175 / LRC² ≈ {K_typical_val:.2f}\n"
-             f"Conservative: K = 230 / LRC² ≈ {K_cons_val:.2f}"
-         )},
-        {"Category":"Thermal Overload Protection", "Parameter":"IDMT Curve Type", "Recommended Setting/Typical Value":"NI / VI / EI (based on coordination) — Typical: NI"},
-        {"Category":"Thermal Overload Protection", "Parameter":"Overload Curve Coordination", "Recommended Setting/Typical Value":"Must lie below motor thermal damage curve"},
+    ("Thermal Model", "Thermal Pickup (Ith)", "FLC (or 1.05 × FLC for service factor)"),
+    ("Thermal Model", "Heating Time Constant (τ)", "25 minutes (typical)"),
+    ("Thermal Model", "Cooling Time Constant", "75 minutes (typical)"),
+    ("Thermal Model", "A² Factor (Initial Heating State)", "Cold: 0.0, Hot: 0.5"),
+    ("Thermal Model", "Negative Sequence Heating (K Factor)", "Typical: K = 175 / LRC²"),
+    ("Thermal Model", "Negative Sequence Heating (K Factor)", "Conservative: K = 230 / LRC²"),
+    ("Thermal Model", "Negative Sequence Heating (K Factor)", "Typical value is 3"),
 
-        {"Category":"Overcurrent Protection", "Parameter":"Instantaneous OC", "Recommended Setting/Typical Value":"10 × FLC or 1.25 × Starting Current"},
-        {"Category":"Overcurrent Protection", "Parameter":"Definite-Time OC", "Recommended Setting/Typical Value":"50–100 ms"},
+    ("Thermal Overload Protection", "Thermal Damage Multiplier(TDM)", "Range 1 to 15."),
+    ("Thermal Overload Protection", "Thermal Overload Ip (×FLC)", "FLC (or 1.05 × FLC for service factor)"),
+    ("Thermal Overload Protection", "Overload Curve Coordination", "Must lie below motor thermal damage curve"),
 
-        {"Category":"Earth Fault Protection", "Parameter":"Pickup (Residual CT)", "Recommended Setting/Typical Value":"0.2 × FLC"},
-        {"Category":"Earth Fault Protection", "Parameter":"Pickup (CBCT)", "Recommended Setting/Typical Value":"0.1 × FLC"},
-        {"Category":"Earth Fault Protection", "Parameter":"Time Delay", "Recommended Setting/Typical Value":"100 ms"},
+    ("IDMT Curve", "IDMT Curve Type", "NI / VI / EI"),
 
-        {"Category":"Locked Rotor Protection", "Parameter":"Pickup", "Recommended Setting/Typical Value":"> FLC, < Starting Current (refer OEM datasheet)"},
-        {"Category":"Locked Rotor Protection", "Parameter":"Time Delay", "Recommended Setting/Typical Value":"> Start time @ 80% V, < Cold stall time"},
+    ("Overcurrent Protection", "Instantaneous OC", "10 × FLC or 1.25 × Starting Current"),
+    ("Overcurrent Protection", "Definite-Time OC", "50–100 ms"),
 
-        {"Category":"Stall Protection", "Parameter":"Pickup", "Recommended Setting/Typical Value":"2.5–3 × FLC (refer OEM datasheet)"},
-        {"Category":"Stall Protection", "Parameter":"Time Delay", "Recommended Setting/Typical Value":"3–5 s (typical)"},
+    ("Earth Fault Protection", "Pickup (Residual CT)", "0.2 × FLC"),
+    ("Earth Fault Protection", "Pickup (CBCT)", "0.1 × FLC"),
+    ("Earth Fault Protection", "Time Delay", "100 ms"),
 
-        {"Category":"Negative Phase Sequence Protection", "Parameter":"Definite Time Element", "Recommended Setting/Typical Value":"30–50% of FLC"},
-        {"Category":"Negative Phase Sequence Protection", "Parameter":"Definite Time", "Recommended Setting/Typical Value":"3–5 s"},
-        {"Category":"Negative Phase Sequence Protection", "Parameter":"IDMT Element (IEC, ~1% V unbalance ≈ 7% I)", "Recommended Setting/Typical Value":"Pickup: 10–15% of FLC; TMS: 1"},
-    ]
+    ("Locked Rotor Protection", "Pickup", "> FLC, < Starting Current, Refer OEM datasheet"),
+    ("Locked Rotor Protection", "Time Delay", "> Start time @ 80% voltage, < Cold stall time"),
+
+    ("Stall Protection", "Pickup", "2.5–3 × FLC,  Refer OEM datasheet"),
+    ("Stall Protection", "Time Delay", "Typical value is 3-5S"),
+
+    ("Negative Phase Sequence Protection", "Definite Time Element", "30-50% of FLC"),
+    ("Negative Phase Sequence Protection", "Definite Time", "3-5 sec"),
+    ("Negative Phase Sequence Protection", "IDMT Curve Type (Based on IEC standard allowing 1% voltage unbalance leading to ~7% Current)", "10-15% of FLC, TMS: 1"),
+]
 
     df_rec = pd.DataFrame(rows)
 
