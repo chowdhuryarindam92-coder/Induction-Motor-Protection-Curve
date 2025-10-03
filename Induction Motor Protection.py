@@ -215,12 +215,26 @@ with st.expander("Recommended Motor Protection setting", expanded=False):
     ("Negative Phase Sequence Protection", "IDMT Curve Type (Based on IEC standard allowing 1% voltage unbalance leading to ~7% Current)", "10-15% of FLC, TMS: 1"),
 ]
 
-    df_rec = pd.DataFrame(
+    # Add an extra empty row at the end
+rows.append(("", "", ""))   # 👈 empty row
+
+df_rec = pd.DataFrame(
     rows,
     columns=["Category", "Parameter", "Recommended Setting/Typical Value"]
 )
 
-    st.dataframe(df_rec, use_container_width=True, hide_index=True)
+st.data_editor(
+    df_rec,
+    use_container_width=True,
+    hide_index=True,
+    num_rows="fixed",
+    column_config={
+        "Category": st.column_config.SelectboxColumn("Category", options=df_rec["Category"].unique().tolist(), disabled=True),
+        "Parameter": st.column_config.SelectboxColumn("Parameter", options=df_rec["Parameter"].tolist(), disabled=True),
+        "Recommended Setting/Typical Value": st.column_config.SelectboxColumn("Recommended Setting/Typical Value", options=df_rec["Recommended Setting/Typical Value"].tolist(), disabled=True),
+    },
+    key="recommended_table_view_only"
+)
 
     csv_bytes = df_rec.to_csv(index=False).encode("utf-8")
     st.download_button(
